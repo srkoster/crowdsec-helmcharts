@@ -27,7 +27,6 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/agent-secret: {{ include (print $.Template.BasePath "/secrets.yaml") . | sha256sum }}
         checksum/lapi-secret: {{ include (print $.Template.BasePath "/lapi-secrets.yaml") . | sha256sum }}
         checksum/lapi-configmap: {{ include (print $.Template.BasePath "/lapi-configmap.yaml") . | sha256sum }}
         {{- if .Values.podAnnotations }}
