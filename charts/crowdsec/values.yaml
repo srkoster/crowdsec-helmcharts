@@ -288,8 +288,10 @@ lapi:
     type: Recreate
 
   secrets:
-    # -- Shared LAPI secret. Will be generated randomly if not specified. Size must be > 64 characters
+    # -- Shared LAPI secret. Size must be > 64 characters
     csLapiSecret: ""
+    # -- Shared LAPI registrationToken. Size must be > 48 characters
+    registrationToken: ""
   # -- Any extra secrets you may need (for example, external DB password)
   extraSecrets: {}
     # dbPassword: randomPass
@@ -535,11 +537,8 @@ appsec:
     #- name: DISABLE_APPSEC_CONFIGS
     #  value: ""
 
-  # -- appsec deployment annotations
-  deployAnnotations: {}
-  # -- strategy for appsec deployment
-  strategy:
-    type: Recreate
+  # -- Annotations to be added to appsec daemonset
+  daemonsetAnnotations: {}
   # -- podAnnotations for appsec deployment
   podAnnotations: {}
   # -- podLabels for appsec deployment
@@ -554,6 +553,11 @@ appsec:
   priorityClassName: ""
   # -- extraInitContainers for appsec deployment
   extraInitContainers: []
+  # -- Extra volumes to be added to appsec pods
+  extraVolumes: []
+  # -- Extra volumeMounts to be added to appsec pods
+  extraVolumeMounts: []
+
   # -- resources for appsec deployment
   resources:
     limits:
@@ -562,6 +566,57 @@ appsec:
     requests:
       cpu: 500m
       memory: 250Mi
+
+  # -- Enable persistent volumes
+  persistentVolume:
+    # -- Persistent volume for config folder. Stores local config (parsers, scenarios etc.)
+    config:
+      enabled: false
+      accessModes:
+        - ReadWriteOnce
+      storageClassName: ""
+      existingClaim: ""
+      size: 100Mi
+  # -- nodeSelector for appsec
+  nodeSelector: {}
+  # -- tolerations for appsec
+  tolerations: []
+  # -- affinity for appsec
+  affinity: {}
+
+  # -- livenessProbe for appsec
+  livenessProbe:
+    httpGet:
+      path: /metrics
+      port: metrics
+      scheme: HTTP
+    periodSeconds: 10
+    successThreshold: 1
+    timeoutSeconds: 5
+    failureThreshold: 3
+
+  # -- readinessProbe for appsec
+  readinessProbe:
+    httpGet:
+      path: /metrics
+      port: metrics
+      scheme: HTTP
+    periodSeconds: 10
+    successThreshold: 1
+    timeoutSeconds: 5
+    failureThreshold: 3
+
+  # -- startupProbe for appsec
+  startupProbe:
+    httpGet:
+      path: /metrics
+      port: metrics
+      scheme: HTTP
+    periodSeconds: 10
+    successThreshold: 1
+    timeoutSeconds: 5
+    failureThreshold: 30
+
   # -- Enable service monitoring (exposes "metrics" port "6060" for Prometheus and "7422" for AppSec) 
   metrics:
     enabled: true
@@ -581,3 +636,13 @@ appsec:
     loadBalancerIP: null
     loadBalancerClass: null
     externalTrafficPolicy: Cluster
+
+  # -- wait-for-lapi init container
+  wait_for_lapi:
+    image:
+      # -- docker image repository name
+      repository: busybox
+      # -- pullPolicy
+      pullPolicy: IfNotPresent
+      # -- docker image tag
+      tag: "1.28"
