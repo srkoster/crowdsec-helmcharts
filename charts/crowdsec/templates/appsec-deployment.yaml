@@ -1,7 +1,7 @@
 # vim: set ft=gotmpl:
 ---
 
-{{- if .Values.appsec.enabled }}
+{{- if and (.Values.appsec.enabled) (.Values.appsec.isDeployment) }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -10,9 +10,9 @@ metadata:
     k8s-app: {{ .Release.Name }}
     type: appsec
     version: v1
-  {{- if .Values.appsec.deployAnnotations }}
+  {{- if .Values.appsec.deploymentAnnotations }}
   annotations:
-  {{ toYaml .Values.appsec.deployAnnotations | trim | indent 4 }}
+  {{ toYaml .Values.appsec.deploymentAnnotations | trim | indent 4 }}
   {{- end }}
 spec:
   replicas: 1
