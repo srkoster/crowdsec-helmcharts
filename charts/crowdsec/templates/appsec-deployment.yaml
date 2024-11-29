@@ -152,9 +152,9 @@ spec:
             subPath: {{ $fileName }}
           {{- end }}
           {{- end }}
-        {{- if .Values.appsec.extraVolumeMounts }}
-        {{ toYaml .Values.appsec.extraVolumeMounts | nindent 10 }}
-        {{- end }}
+          {{- if .Values.appsec.extraVolumeMounts }}
+          {{ toYaml .Values.appsec.extraVolumeMounts | nindent 10 }}
+          {{- end }}
 
         terminationGracePeriodSeconds: 30
 
