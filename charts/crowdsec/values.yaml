@@ -507,8 +507,8 @@ agent:
 appsec:
   # -- Enable AppSec (by default disabled)
   enabled: false
-  # -- Switch to Deployment instead of DaemonSet (In some cases, you may want to deploy Appsec as a Deployment)
-  isDeployment: false
+  # -- Switch to Deployment instead of DaemonSet (In some cases, you may want to deploy Appsec as a Deployment to limit the amount of replicas)
+  isDeployment: true
   # -- replicas for Appsec if isDeployment is set to true
   replicas: 1
   # -- strategy for appsec deployment
