@@ -1,3 +1,10 @@
+tls:
+  enabled: true
+  caBundle: false
+  #insecureSkipVerify: true
+  agent:
+    tlsClientAuth: false
+    
 config:
   config.yaml.local: |
     api:
