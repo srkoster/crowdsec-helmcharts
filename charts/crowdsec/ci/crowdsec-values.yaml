@@ -13,28 +13,6 @@ config:
 agent:
   metrics:
     enabled: true
-  additionalAcquisition:
-    - source: file
-      filenames:
-        - /var/log/auth.log
-      force_inotify: true
-      labels:
-        type: syslog
-    - source: file
-      filename: /var/log/auth.log
-      labels:
-        type: syslog
-    - source: journalctl
-      journalctl_filter:
-        - "_SYSTEMD_UNIT=sshd.service"
-      labels:
-        type: syslog
-    - source: kinesis
-      stream_arn: arn:aws:kinesis:eu-west-1:123456789012:stream/my-stream
-      use_enhanced_fanout: true
-      consumer_name: my-consumer
-      labels:
-        type: mytype
   acquisition:
     - namespace: test
       podName: test-*
