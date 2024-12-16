@@ -46,18 +46,6 @@ agent:
           <QueryList><Query><Select Path=\"Security\">*[System[(EventID=42) and (Level=2)]]</Select></Query></QueryList>
       labels:
         type: eventlog
-    - source: kafka
-      brokers:
-        - "localhost:9093"
-      topic: "my-topic"
-      timeout: 5
-      tls:
-        insecure_skip_verify: true
-        client_cert: /path/kafkaClient.certificate.pem
-        client_key: /path/kafkaClient.key
-        ca_cert: /path/ca.crt
-      labels:
-        type: nginx
   acquisition:
     - namespace: test
       podName: test-*
