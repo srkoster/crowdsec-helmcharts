@@ -41,13 +41,6 @@ agent:
       labels:
         type: syslog
         program: syslog
-    - source: docker
-      container_name:
-        - "my-container"
-      container_id:
-        - "1234567890abcdef"
-      labels:
-        type: docker
     - source: wineventlog
       xpath_query: |
           <QueryList><Query><Select Path=\"Security\">*[System[(EventID=42) and (Level=2)]]</Select></Query></QueryList>
