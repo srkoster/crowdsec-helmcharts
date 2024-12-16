@@ -35,17 +35,6 @@ agent:
       consumer_name: my-consumer
       labels:
         type: mytype
-    - source: syslog
-      listen_addr: 127.0.0.1
-      listen_port: 514
-      labels:
-        type: syslog
-        program: syslog
-    - source: wineventlog
-      xpath_query: |
-          <QueryList><Query><Select Path=\"Security\">*[System[(EventID=42) and (Level=2)]]</Select></Query></QueryList>
-      labels:
-        type: eventlog
   acquisition:
     - namespace: test
       podName: test-*
